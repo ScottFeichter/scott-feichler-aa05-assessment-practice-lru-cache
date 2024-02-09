@@ -61,9 +61,9 @@ Below is the NumSorter class that is to be refactored
 */
 class NumSorter {
   constructor() {
-    this.numList = [];
+    this.numList = new LinkedList();
 
-    this.allowedNums = [];
+    this.allowedNums = new Set();
   }
 
   /*
@@ -71,8 +71,8 @@ class NumSorter {
   Should not have any duplicates in allowedNums
   */
   addAllowedNum(num) {
-    if (!this.allowedNums.includes(num)) {
-      this.allowedNums.push(num);
+    if (!this.allowedNums.has(num)) {
+      this.allowedNums.add(num);
       return `${num} added to allowedNums`;
     } else {
       return `${num} already in allowedNums`;
@@ -81,7 +81,7 @@ class NumSorter {
 
   /* Returns true if the number is allowed, false otherwise */
   isNumAllowed(num) {
-    return this.allowedNums.includes(num);
+    return this.allowedNums.has(num);
   }
 
   /*
@@ -89,8 +89,11 @@ class NumSorter {
   Returns value at the back of numList
   */
   addNumToBack(num) {
-    if (this.isNumAllowed(num)) this.numList.push(num);
-    return this.numList[this.numList.length - 1];
+    if (this.isNumAllowed(num)) {
+      this.numList.enqueue(num);
+      return num;
+    }
+    return this.numList.tail.value;
   }
 
   /*
@@ -98,8 +101,11 @@ class NumSorter {
   If numList is empty, return undefined
   */
   getFirstNum() {
-    if(this.numList.length > 0){
-      return this.numList.shift();
+    if (this.numList.length > 0) {
+      let removed = this.numList.head;
+      this.numList.head = this.numList.head.next;
+      this.numList.length--;
+      return removed.value;
     } else {
       return undefined;
     }
@@ -107,12 +113,12 @@ class NumSorter {
 
   /* Returns the count of nums in numList */
   numCount() {
-    let count = 0;
-    while (this.numList[count] !== undefined) {
-      count++;
-    }
-    
-    return count;
+    // let count = 0;
+    // while (this.numList[count] !== undefined) {
+    //   count++;
+    // }
+
+    return this.numList.length;
   }
 
   /*
@@ -120,11 +126,11 @@ class NumSorter {
   Only include allowed numbers; returns amount of nums in numList
   */
   buildNumList(amount) {
-    this.numList = [];
+    this.numList = new LinkedList(amount);
 
     for (let i = 0; i <= amount; i++) {
-      if (this.allowedNums.includes(i)) {
-          this.numList.push(i);
+      if (this.allowedNums.has(i)) {
+        this.numList.enqueue(i);
       }
     }
 
@@ -133,27 +139,31 @@ class NumSorter {
 }
 
 /* Comment in code below to run local test */
-// const newNumSort = new NumSorter(3);
-// console.log(newNumSort.addAllowedNum(0));   // '0 added to allowedNums'
-// console.log(newNumSort.addAllowedNum(1));   // '1 added to allowedNums'
-// console.log(newNumSort.addAllowedNum(1));   // '1 already in allowedNums'
-// console.log(newNumSort.addAllowedNum(2));   // '2 added to allowedNums'
+const newNumSort = new NumSorter(3);
+console.log(newNumSort.addAllowedNum(0)); // '0 added to allowedNums'
+console.log(newNumSort.addAllowedNum(1)); // '1 added to allowedNums'
+console.log(newNumSort.addAllowedNum(1)); // '1 already in allowedNums'
+console.log(newNumSort.addAllowedNum(2)); // '2 added to allowedNums'
 
-// console.log(newNumSort.isNumAllowed(1));    // true
-// console.log(newNumSort.isNumAllowed(5));    // false
+console.log(newNumSort.isNumAllowed(1)); // true
+console.log(newNumSort.isNumAllowed(5)); // false
 
-// console.log(newNumSort.addNumToBack(1));    // 1
-// console.log(newNumSort.addNumToBack(2));    // 2
-// console.log(newNumSort.addNumToBack(5));    // 2
+console.log(newNumSort.addNumToBack(1)); // 1
+console.log(newNumSort.addNumToBack(2)); // 2
+console.log(newNumSort.addNumToBack(5)); // 2
 
-// console.log(newNumSort.getFirstNum());      // 1
-// console.log(newNumSort.getFirstNum());      // 2
-// console.log(newNumSort.getFirstNum());      // undefined
+console.log(newNumSort.getFirstNum()); // 1
+console.log(newNumSort.getFirstNum()); // 2
+console.log(newNumSort.getFirstNum()); // undefined
 
-// console.log(newNumSort.numCount());         // 0
+console.log(newNumSort.numCount());         // 0
 
-// console.log(newNumSort.buildNumList(5));    // 3
+console.log(newNumSort.numList);
+console.log(newNumSort.allowedNums);
 
-// console.log(newNumSort.numCount());         // 3
+
+console.log(newNumSort.buildNumList(5));    // 3
+
+console.log(newNumSort.numCount());         // 3
 
 module.exports = { NumSorter, LinkedList };

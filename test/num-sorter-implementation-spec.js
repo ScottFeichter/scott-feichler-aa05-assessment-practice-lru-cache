@@ -7,8 +7,8 @@ describe("NumSorter implementation", function () {
   let numSorter;
 
   beforeEach(() => {
-    numSorter = new NumSorter()
-  })
+    numSorter = new NumSorter();
+  });
 
   it("numList property is not an Array and is an instance of a Set OR a LinkedList", function () {
     expect(Array.isArray(numSorter.numList)).to.be.false;
@@ -56,7 +56,7 @@ describe("NumSorter implementation", function () {
 
     expect(numSorter.addNumToBack(2)).to.eql(2);
     expect(numSorter.addNumToBack(3)).to.eql(3);
-    expect(numSorter.addNumToBack(5)).to.eql(3);
+    expect(numSorter.addNumToBack(5)).to.eql(3); // 3? 2!?!
   });
 
   it("getFirstNum removes the first number in the numList and returns the value", function () {
@@ -64,9 +64,9 @@ describe("NumSorter implementation", function () {
     numSorter.addAllowedNum(1);
     numSorter.addAllowedNum(5);
 
-    numSorter.addNumToBack(0)
-    numSorter.addNumToBack(1)
-    numSorter.addNumToBack(5)
+    numSorter.addNumToBack(0);
+    numSorter.addNumToBack(1);
+    numSorter.addNumToBack(5);
 
     expect(numSorter.getFirstNum()).to.eql(0);
     expect(numSorter.getFirstNum()).to.eql(1);
@@ -80,9 +80,9 @@ describe("NumSorter implementation", function () {
 
     expect(numSorter.numCount()).to.eql(0);
 
-    numSorter.addNumToBack(5)
-    numSorter.addNumToBack(6)
-    numSorter.addNumToBack(7)
+    numSorter.addNumToBack(5);
+    numSorter.addNumToBack(6);
+    numSorter.addNumToBack(7);
 
     expect(numSorter.numCount()).to.eql(3);
   });
